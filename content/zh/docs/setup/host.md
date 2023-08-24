@@ -37,6 +37,10 @@ description: >
 
 假设要给控制节点 10.168.26.216 添加计算节点 10.168.222.140 首先需要 ssh root 免密码登录对应的计算节点以及控制节点自身。
 
+{{% alert title="注意" color="warning" %}}
+如果是高可用部署的环境，这里添加节点的控制节点 ip 不要用 vip ，只能用第1个控制节点的实际 ip ，因为 vip 有可能漂移到其他节点上，但通常只有第1个节点配置了 ssh 免密登陆登陆其他节点的权限，用其他控制节点会导致 ssh 登陆不上。
+{{% /alert %}}
+
 ```bash
 # 将控制节点自己设置成免密登录
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub root@10.168.26.216
@@ -204,3 +208,7 @@ $ climc endpoint-list --details | grep webconsole | grep public
 $ climc webconsole-server testvm01
 https://console.yunion.cn/web-console?access_token=FI-VXQSAonhzfSnxVTKCCbwHinp7swlRkmi-4p6s-4OfZpg6TG9YhWuwbHEUA1D7XoKu_w%3D%3D&api_server=https%3A%2F%2F10.168.222.216%3A8899&password=65xB2kaE&protocol=vnc
 ```
+
+## 常见问题
+### 存储介质识别不准，例如机械盘识别成固态
+例如用户使用SSD 做lvmcache 等情况，可能造成宿主机本地存储介质识别不准，可自行前往对应宿主机->存储->对应存储介质 修改属性，选择介质类型修改即可。
